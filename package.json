@@ -1,0 +1,29 @@
+{
+  "name": "repo-rename",
+  "version": "0.0.1",
+  "description": "simple and easy to use CLI tool to rename your repository into a new case style",
+  "keywords": [
+    "cli",
+    "npm",
+    "repository",
+    "tool",
+    "rename",
+    "case",
+    "renamer",
+    "case-converter"
+  ],
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PsclDev/repo-rename.git"
+  },
+  "author": "PsclDev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PsclDev/repo-rename/issues"
+  },
+  "homepage": "https://github.com/PsclDev/repo-rename#readme"
+}
