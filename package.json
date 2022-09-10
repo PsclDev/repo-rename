@@ -20,10 +20,25 @@
     "type": "git",
     "url": "git+https://github.com/PsclDev/repo-rename.git"
   },
+  "bin": {
+    "repo-rename": "./src/index.js"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "author": "PsclDev",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/PsclDev/repo-rename/issues"
   },
-  "homepage": "https://github.com/PsclDev/repo-rename#readme"
+  "homepage": "https://github.com/PsclDev/repo-rename#readme",
+  "dependencies": {
+    "@octokit/rest": "^19.0.4",
+    "axios": "^0.27.2",
+    "chalk": "4.1.2",
+    "change-case": "^4.1.2",
+    "commander": "^9.4.0",
+    "console-table-printer": "^2.11.1",
+    "enquirer": "^2.3.6"
+  }
 }
