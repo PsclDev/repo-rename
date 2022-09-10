@@ -1,9 +1,11 @@
 # ✏️ Repo rename
 simple and easy to use CLI tool to rename your repository into a new case style. This makes it a smooth process to name all your repos in a single style.
 
+![Publish pipeline](https://github.com/pscldev/repo-rename/actions/workflows/publish.yml/badge.svg?branch=master)
+
 
 ## 💻 Usage
-The best way is to use via ää`npx`, but you can also download it with `npm i repo-rename`
+The best way is to use via `npx`, but you can also download it with `npm i repo-rename`
 
 ```
 $ npx repo-rename -h
