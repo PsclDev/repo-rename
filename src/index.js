@@ -10,7 +10,7 @@ const { CaseStyle, valdiateCaseStyle, changeCase, getAllRepositories, authentica
 
 program.version(version)
     .requiredOption('-T, --token <token>', 'Your github personal access token (pat)')
-    .option('-C, --case <case-style>', `The case style to which the repositories should be renamed (default: paramCase) (available: ${CaseStyle.join(', ')})`, 'paramCase');
+    .option('-C, --case <case-style>', `The case style to which the repositories should be renamed (available: ${CaseStyle.join(', ')})`, 'paramCase');
 
 program.parse(process.argv);
 const options = program.opts();

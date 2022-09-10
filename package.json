@@ -1,6 +1,6 @@
 {
   "name": "repo-rename",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "simple and easy to use CLI tool to rename your repository into a new case style",
   "keywords": [
     "cli",
