@@ -62,7 +62,7 @@ function changeCase(style, input) {
 }
 
 let octokit;
-let username;
+let user;
 
 async function authenticateToGithub(token) {
     octokit = new Octokit({
@@ -70,13 +70,13 @@ async function authenticateToGithub(token) {
     });
 
     const { data } = await octokit.rest.users.getAuthenticated();
-    username = data.login;
-    console.log(chalk.green(`Authenticated to github as ${username}`))
+    user = { id: data.id, name: data.login };
+    console.log(chalk.green(`Authenticated to github as ${user.name}`))
 }
 
-async function getAllRepositories() {
-    const { data } = await octokit.search.repos({ q: `user:${username}` });
-    return data.items.map(repo => ({ id: repo.id, name: repo.name, fullName: repo.full_name })).sort((a, b) => a.name.localeCompare(b.name));
+async function getAllRepositories(includeOrgs) {
+    const { data } = await octokit.request('/user/repos?per_page=100');
+    return data.filter(repo => includeOrgs ? true : repo.owner.id === user.id).map(repo => ({ id: repo.id, name: repo.name, fullName: repo.full_name })).sort((a, b) => a.name.localeCompare(b.name));
 }
 
 async function generateRenames(style, repos) {

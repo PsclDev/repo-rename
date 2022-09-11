@@ -22,7 +22,7 @@ Options:
 ## 🔑 Personal Access token
 To use this tool you need to [create a PAT](https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
 
-**The token doesn't need any scope!**
+**The token needs the `repo` scope!**
 
 
 ## 🔎 Available case styles
@@ -53,6 +53,10 @@ To use this tool you need to [create a PAT](https://docs.github.com/en/enterpris
 ## 📌 Feature ideas
 - Search repos to update links inside README's
 - Update the local remotes of your repositories
+
+
+## ⚠️ Known Issue
+The tool doesn't support pagination currently, so there is a maximum of 100 repositories which can be shown up.
 
 
 ## 📃 License

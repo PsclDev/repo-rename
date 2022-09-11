@@ -22,11 +22,18 @@ async function main() {
     printSpacer();
 
     await authenticateToGithub(options.token);
-    let repos = await getAllRepositories();
+
+    const includeOrgsPrompt = new Toggle({
+        message: 'Include organisation repositories?',
+        enabled: 'Yes',
+        disabled: 'No'
+    })
+    const includeOrgs = await includeOrgsPrompt.run().catch(console.error);
+    let repos = await getAllRepositories(includeOrgs);
 
     const choices = [{ id: 'all', name: 'All repositories', original: { id: 'all', name: 'All repositories' } }, ...repos.map(repo => ({ ...repo, original: repo }))]
     const repoSelectPrompt = new MultiSelect({
-        message: 'Choose which repos should be renamed',
+        message: `Choose which repos should be renamed (found ${repos.length})`,
         hint: 'Press space to select/deselect items',
         choices,
         required: true,
