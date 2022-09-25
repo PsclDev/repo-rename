@@ -3,6 +3,8 @@ simple and easy to use CLI tool to rename your repository into a new case style.
 
 ![Publish pipeline](https://github.com/pscldev/repo-rename/actions/workflows/publish.yml/badge.svg?branch=master)
 
+## 📸 Example
+![Example image](example.png)
 
 ## 💻 Usage
 The best way is to use via `npx`, but you can also download it with `npm i repo-rename`
@@ -53,10 +55,6 @@ To use this tool you need to [create a PAT](https://docs.github.com/en/enterpris
 ## 📌 Feature ideas
 - Search repos to update links inside README's
 - Update the local remotes of your repositories
-
-
-## ⚠️ Known Issue
-The tool doesn't support pagination currently, so there is a maximum of 100 repositories which can be shown up.
 
 
 ## 📃 License

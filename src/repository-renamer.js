@@ -62,21 +62,47 @@ function changeCase(style, input) {
 }
 
 let octokit;
-let user;
+let USER;
+let TOKEN;
 
 async function authenticateToGithub(token) {
-    octokit = new Octokit({
-        auth: token
-    });
+    try {
+        octokit = new Octokit({
+            auth: token
+        });
 
-    const { data } = await octokit.rest.users.getAuthenticated();
-    user = { id: data.id, name: data.login };
-    console.log(chalk.green(`Authenticated to github as ${user.name}`))
+        const { data } = await octokit.rest.users.getAuthenticated();
+        TOKEN = token;
+        USER = { ID: data.id, NAME: data.login };
+        console.log(chalk.green(`Authenticated to github as ${USER.NAME}`))
+
+        return true
+    } catch (error) {
+        return false;
+    }
 }
 
 async function getAllRepositories(includeOrgs) {
-    const { data } = await octokit.request('/user/repos?per_page=100');
-    return data.filter(repo => includeOrgs ? true : repo.owner.id === user.id).map(repo => ({ id: repo.id, name: repo.name, fullName: repo.full_name })).sort((a, b) => a.name.localeCompare(b.name));
+    const reqUrl = (page) => `https://api.github.com/user/repos?page=${page}&per_page=100`;
+    const filterRepos = (repo) => includeOrgs ? true : repo.owner.id === USER.ID;
+    const getRepos = async (page) => await axios.get(reqUrl(page), getRequestOptions()
+    ).catch((ex) => { console.error(chalk.red('Internal programm error occurred: ' + ex)); });
+
+    const { headers, data: firstReqData } = await getRepos(1);
+
+    const repos = firstReqData.filter(filterRepos);
+
+    if (headers.link) {
+        const lastPageStr = headers.link.split(',').find(x => x.includes('last'));
+        const lastPage = new URL(lastPageStr.substring(lastPageStr.indexOf('<') + 1, lastPageStr.indexOf('>'))).searchParams.get('page');
+
+        for (let page = 2; page <= lastPage; page++) {
+            const { data } = await getRepos(page);
+            repos.push(...data.filter(filterRepos));
+        }
+    }
+
+    return repos.map(repo => ({ id: repo.id, name: repo.name, fullName: repo.full_name })).sort((a, b) => a.name.localeCompare(b.name));;
 }
 
 async function generateRenames(style, repos) {
@@ -99,19 +125,23 @@ async function printRenames(repos) {
     table.printTable();
 }
 
-async function renameRepository(token, repo) {
+async function renameRepository(repo) {
     await axios.patch(`https://api.github.com/repos/${repo.fullName}`,
         { name: repo.newName },
-        {
-            headers: {
-                'Authorization': `Token ${token}`,
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-        }
+        getRequestOptions()
     ).catch((ex) => { console.error(chalk.red('Internal programm error occurred: ' + ex)); });
 
     console.log(`${chalk.green('✔')} Successfully renamed ${chalk.red(repo.name)} to ${chalk.green(repo.newName)}`);
+}
+
+function getRequestOptions() {
+    return {
+        headers: {
+            'Authorization': `Token ${TOKEN}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+    };
 }
 
 module.exports = {
