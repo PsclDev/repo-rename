@@ -3,6 +3,8 @@ simple and easy to use CLI tool to rename your repository into a new case style.
 
 ![Publish pipeline](https://github.com/pscldev/repo-rename/actions/workflows/publish.yml/badge.svg?branch=master)
 
+## 📸 Example
+![Example image](example.png)
 
 ## 💻 Usage
 The best way is to use via `npx`, but you can also download it with `npm i repo-rename`
@@ -22,7 +24,7 @@ Options:
 ## 🔑 Personal Access token
 To use this tool you need to [create a PAT](https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
 
-**The token doesn't need any scope!**
+**The token needs the `repo` scope!**
 
 
 ## 🔎 Available case styles

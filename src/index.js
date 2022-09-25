@@ -21,12 +21,25 @@ async function main() {
     valdiateCaseStyle(options.case);
     printSpacer();
 
-    await authenticateToGithub(options.token);
-    let repos = await getAllRepositories();
+    var successful = await authenticateToGithub(options.token);
+    if (!successful) {
+        throw new Error("Bad credentials")
+    }
+
+    const includeOrgsPrompt = new Toggle({
+        message: 'Include organisation repositories?',
+        enabled: 'Yes',
+        disabled: 'No'
+    })
+    const includeOrgs = await includeOrgsPrompt.run().catch(console.error);
+
+    printSpacer();
+    console.log(chalk.blue(`Trying to load all your repositories, including organisations? ${includeOrgs}`));
+    let repos = await getAllRepositories(includeOrgs);
 
     const choices = [{ id: 'all', name: 'All repositories', original: { id: 'all', name: 'All repositories' } }, ...repos.map(repo => ({ ...repo, original: repo }))]
     const repoSelectPrompt = new MultiSelect({
-        message: 'Choose which repos should be renamed',
+        message: `Choose which repos should be renamed (found ${repos.length})`,
         hint: 'Press space to select/deselect items',
         choices,
         required: true,
@@ -53,7 +66,7 @@ async function main() {
     }
     printSpacer();
 
-    renamesList.filter(repo => repo.needsRename).forEach(async (repo) => await renameRepository(options.token, repo));
+    renamesList.filter(repo => repo.needsRename).forEach(async (repo) => await renameRepository(repo));
 }
 
 main().catch((ex) => { console.error(chalk.red('Internal programm error occurred: ' + ex)); process.exit(1); });
