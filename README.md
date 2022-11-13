@@ -1,6 +1,10 @@
 # ✏️ Repo rename
 simple and easy to use CLI tool to rename your repository into a new case style. This makes it a smooth process to name all your repos in a single style.
 
+The repos will be sorted by their owner and name. Your own will always be on top.
+
+*Dont be confused if you reach the end of the list by key navigation - it will restart the list*
+
 ![Publish pipeline](https://github.com/pscldev/repo-rename/actions/workflows/publish.yml/badge.svg?branch=master)
 
 ## 📸 Example

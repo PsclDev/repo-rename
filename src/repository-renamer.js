@@ -102,7 +102,27 @@ async function getAllRepositories(includeOrgs) {
         }
     }
 
-    return repos.map(repo => ({ id: repo.id, name: repo.name, fullName: repo.full_name })).sort((a, b) => a.name.localeCompare(b.name));;
+    return sortAllRepositories(repos);
+}
+
+async function sortAllRepositories(unsortedRepos) {
+    const byOwner = {};
+
+    unsortedRepos.forEach((repo) => {
+        if (byOwner[repo.owner.login]) {
+            byOwner[repo.owner.login].push(repo);
+        } else {
+            byOwner[repo.owner.login] = [repo];
+        }
+    });
+
+    const mapping = (repo) => ({ id: repo.id, name: repo.owner.login === USER.NAME ? repo.name : `${repo.owner.login}/${repo.name}` });
+    const sorting = (a, b) => a.name.localeCompare(b.name);
+    const ownerSorting = (a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : (a.toLowerCase() < b.toLowerCase() ? -1 : 0);
+
+    const sorted = [...byOwner[USER.NAME].map(mapping).sort(sorting)];
+    Object.keys(byOwner).filter(o => o !== USER.NAME).sort(ownerSorting).forEach(owner => sorted.push(...byOwner[owner].map(mapping).sort(sorting)));
+    return sorted;
 }
 
 async function generateRenames(style, repos) {
