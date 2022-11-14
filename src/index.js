@@ -37,7 +37,7 @@ async function main() {
     console.log(chalk.blue(`Trying to load all your repositories, including organisations? ${includeOrgs}`));
     let repos = await getAllRepositories(includeOrgs);
 
-    const choices = [{ id: 'all', name: 'All repositories', original: { id: 'all', name: 'All repositories' } }, ...repos.map(repo => ({ ...repo, original: repo }))]
+    const choices = [{ id: 'all', name: 'All repositories', original: { id: 'all', name: 'All repositories' } }, ...repos.map(repo => ({ id: repo.id, name: repo.label, original: repo }))]
     const repoSelectPrompt = new MultiSelect({
         message: `Choose which repos should be renamed (found ${repos.length})`,
         hint: 'Press space to select/deselect items',

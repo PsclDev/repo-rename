@@ -116,7 +116,7 @@ async function sortAllRepositories(unsortedRepos) {
         }
     });
 
-    const mapping = (repo) => ({ id: repo.id, name: repo.owner.login === USER.NAME ? repo.name : `${repo.owner.login}/${repo.name}` });
+    const mapping = (repo) => ({ id: repo.id, name: repo.name, label: repo.owner.login === USER.NAME ? repo.name : `${repo.owner.login}/${repo.name}` });
     const sorting = (a, b) => a.name.localeCompare(b.name);
     const ownerSorting = (a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : (a.toLowerCase() < b.toLowerCase() ? -1 : 0);
 
